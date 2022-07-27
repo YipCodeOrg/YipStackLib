@@ -6,14 +6,14 @@ export function isSimpleProperty(obj: any, property: PropertyKey){
     return false
 }
 
-export function isStringArray(obj: any){
+export function isStringArray(obj: any): obj is string[]{
     if(!Array.isArray(obj)){
         return false
     }
     return(areStrings(obj))
 }
 
-function areStrings(objs: any[]){
+function areStrings(objs: any[]): objs is string[]{
     for(const obj of objs){
         if(!isString(obj)){
             return false
@@ -22,6 +22,6 @@ function areStrings(objs: any[]){
     return true
 }
 
-export function isString(obj: any){
+export function isString(obj: any): obj is string{
     return (typeof obj === 'string' || obj instanceof String)
 }

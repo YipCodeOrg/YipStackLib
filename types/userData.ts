@@ -1,4 +1,4 @@
-import { isSimpleProperty, isString, isStringArray } from "../util/typeGuards"
+import { isSimpleProperty, isString, isStringArray } from "../util/typePredicates"
 
 export type UserData = {
     sub: string,
