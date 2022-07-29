@@ -14,13 +14,23 @@ export function areSimpleStringProperties(obj: any, properties: PropertyKey[]){
     return properties.every(prop => isSimpleStringProperty(obj, prop))
 }
 
-export function isString(obj: any){
+export function isString(obj: any): obj is string{
     return (!!obj && (typeof obj === 'string' || obj instanceof String))
 }
 
-export function areStrings(objs: any[]): objs is string[]{
+export function isTypedArray<T>(obj: any, isElementCorrectType: (obj: any) => obj is T): obj is T[]{
+    if(!obj){
+        return false
+    }
+    if(!Array.isArray(obj)){
+        return false
+    }
+    return areAllCorrectType(obj, isElementCorrectType)
+}
+
+export function areAllCorrectType<T>(objs: any[], isElementCorrectType: (obj: any) => obj is T): objs is T[]{
     for(const obj of objs){
-        if(!isString(obj)){
+        if(!isElementCorrectType(obj)){
             return false
         }
     }
@@ -28,8 +38,9 @@ export function areStrings(objs: any[]): objs is string[]{
 }
 
 export function isStringArray(obj: any): obj is string[]{
-    if(!Array.isArray(obj)){
-        return false
-    }
-    return(areStrings(obj))
+    return isTypedArray(obj, isString)
+}
+
+export function areStrings(objs: any[]): objs is string[]{
+    return areAllCorrectType(objs, isString)
 }
