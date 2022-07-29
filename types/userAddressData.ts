@@ -7,7 +7,7 @@ export type UserAddressData = {
     address: string
 }
 
-export function isUseAddressrData(obj: any): obj is UserAddressData{
+export function isUseAddressData(obj: any): obj is UserAddressData{
     if(!obj){
         return false
     }
