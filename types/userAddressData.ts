@@ -1,10 +1,10 @@
+import { Address, isAddress } from "../packages/YipAddress/core/address"
 import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
 
 export type UserAddressData = {
     sub: string,
     yipCode: string,
-    //TODO: Change address to structured type
-    address: string
+    address: Address
 }
 
 export function isUserAddressDataArray(obj: any): obj is UserAddressData[]{
@@ -15,10 +15,13 @@ export function isUserAddressData(obj: any): obj is UserAddressData{
     if(!obj){
         return false
     }
-    const expectedStringProperties = ["sub", "yipCode", "address"]
+    const expectedStringProperties = ["sub", "yipCode"]
 
     if(!areSimpleStringProperties(obj, expectedStringProperties)){        
         return false
     }
-    return true
+
+    const addres = obj.address
+
+    return isAddress(addres)
 }
