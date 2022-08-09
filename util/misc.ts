@@ -11,3 +11,7 @@ export const logAndReject = (reject: (reason?: any) => void, msg: string) => {
 export const serialize = function(obj: any) {
     return JSON.stringify(obj)
 }
+
+export function sortByKeyFunction<TKey, TData>(k: TKey[], d: TData[], f: (data: TData) => TKey): TData[]{
+    return k!! && f!! ? d : d
+}
