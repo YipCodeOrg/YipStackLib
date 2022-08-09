@@ -1,0 +1,3 @@
+[submodule "packages/YipAddress"]
+	path = packages/YipAddress
+	url = git@github.com:ColmBhandal/YipAddress.git
