@@ -17,11 +17,11 @@ describe("sortByKeyFunction", () => {
             expected: [{id: 1, data: "One"}, {id: 3, data: "Three"}, {id: 2, data: "Two"}],
         },
         {
-            d: [{id: 1, data: "One"}, {id: 2, data: "Two"}, {id: 3, data: "Three"}],
-            k: [2, 4, 3],
+            d: [{id: 1, data: "One"}, {id: 2, data: "Two"}, {id: 3, data: "Three"}, {id: 4, data: "Four"}],
+            k: [3, 500, 2],
             f: function(data: {id: number, data: string}){return data.id},
             desc: "Different elements, different order",
-            expected: [{id: 2, data: "Two"}, {id: 3, data: "Three"}, {id: 1, data: "One"}],
+            expected: [{id: 3, data: "Three"}, {id: 2, data: "Two"}, {id: 1, data: "One"}, {id: 4, data: "Four"}],
         },
     ])(
         "$desc", ({k, d, f, expected}) => {

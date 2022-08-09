@@ -12,6 +12,53 @@ export const serialize = function(obj: any) {
     return JSON.stringify(obj)
 }
 
-export function sortByKeyFunction<TKey, TData>(k: TKey[], d: TData[], f: (data: TData) => TKey): TData[]{
-    return k!! && f!! ? d : d
+export function sortByKeyFunction<TKey, TData>(sortArray: TKey[], dataArray: TData[], keyMapper: (data: TData) => TKey): TData[]{
+    
+    const keyDataIndexMap = new Map<TKey, number>()
+    const usedIndices = new Set<number>()
+    const resultArray: TData[] = []
+
+    // Build map
+    for (let index = 0; index < dataArray.length; index++) {
+        const data = dataArray[index];
+        if(data === undefined){
+            throw new Error("Unexpected undefined data encountered during map building");
+        }
+        const key = keyMapper(data)
+        if(keyDataIndexMap.has(key)){
+            throw new Error("Duplicate key found");            
+        }
+        keyDataIndexMap.set(key, index)        
+    }
+
+    // Main sort
+    for(let key of sortArray){
+        if(keyDataIndexMap.has(key)){
+            const index = keyDataIndexMap.get(key)
+            if(index === undefined){
+                throw new Error("Unexpected undefined index encountered during main sort");
+            }
+            const data = index === undefined ? undefined : dataArray[index]
+            if(data === undefined){
+                throw new Error("Unexpected undefined data encountered");
+            }
+            usedIndices.add(index)
+            resultArray.push(data)
+        }
+    }
+
+    // Append stragglers, if any
+    if(dataArray.length !== usedIndices.size){
+        for (let index = 0; index < dataArray.length; index++) {        
+            if(!usedIndices.has(index)){
+                const data = dataArray[index];
+                if(data === undefined){
+                    throw new Error("Unexpected undefined data encountered during append stragglers");
+                }
+                resultArray.push(data)
+            }
+        }
+    }
+
+    return resultArray
 }
