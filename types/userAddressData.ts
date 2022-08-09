@@ -4,6 +4,7 @@ import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
 export type UserAddressData = {
     sub: string,
     yipCode: string,
+    name?: string,
     address: Address
 }
 
@@ -15,7 +16,13 @@ export function isUserAddressData(obj: any): obj is UserAddressData{
     if(!obj){
         return false
     }
-    const expectedStringProperties = ["sub", "yipCode"]
+    let expectedStringProperties = ["sub", "yipCode"]
+
+    const name = obj.name
+
+    if(!!name){
+        expectedStringProperties.push("name")
+    }
 
     if(!areSimpleStringProperties(obj, expectedStringProperties)){        
         return false
