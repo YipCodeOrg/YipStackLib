@@ -61,11 +61,10 @@ export function inverseIndexMap<TKey, TData>(a: TData[], keyMapper: (data: TData
         if(keyDataIndexMap.has(key)){
             throw new Error("Duplicate key found");            
         }
-        keyDataIndexMap.set(key, index)        
+        keyDataIndexMap.set(key, index)
     }
 
     return keyDataIndexMap
-
 }
 
 export function inverseDataMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, TData>{
@@ -76,7 +75,8 @@ export function inverseDataMap<TKey, TData>(a: TData[], keyMapper: (data: TData)
         }
         return val
     }
-    return mapMap(inverseIndexMap(a, keyMapper), (k, i) => [k, getValueAtIndex(i)])
+    const invIndexMap = inverseIndexMap(a, keyMapper)
+    return mapMap(invIndexMap, (k, i) => [k, getValueAtIndex(i)])
 }
 
 function mapMap<TKI, TVI, TKO, TVO>(map: Map<TKI, TVI>,
