@@ -14,22 +14,9 @@ export const serialize = function(obj: any) {
 
 export function sortByKeyFunction<TKey, TData>(sortArray: TKey[], dataArray: TData[], keyMapper: (data: TData) => TKey): TData[]{
     
-    const keyDataIndexMap = new Map<TKey, number>()
+    const keyDataIndexMap = inverseIndexMap(dataArray, keyMapper)
     const usedIndices = new Set<number>()
     const resultArray: TData[] = []
-
-    // Build map
-    for (let index = 0; index < dataArray.length; index++) {
-        const data = dataArray[index];
-        if(data === undefined){
-            throw new Error("Unexpected undefined data encountered during map building");
-        }
-        const key = keyMapper(data)
-        if(keyDataIndexMap.has(key)){
-            throw new Error("Duplicate key found");            
-        }
-        keyDataIndexMap.set(key, index)        
-    }
 
     // Main sort
     for(let key of sortArray){
@@ -61,4 +48,23 @@ export function sortByKeyFunction<TKey, TData>(sortArray: TKey[], dataArray: TDa
     }
 
     return resultArray
+}
+
+export function inverseIndexMap<TData, TKey>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, number>{
+    const keyDataIndexMap = new Map<TKey, number>()
+
+    for (let index = 0; index < a.length; index++) {
+        const data = a[index];
+        if(data === undefined){
+            throw new Error("Unexpected undefined data encountered during map building");
+        }
+        const key = keyMapper(data)
+        if(keyDataIndexMap.has(key)){
+            throw new Error("Duplicate key found");            
+        }
+        keyDataIndexMap.set(key, index)        
+    }
+
+    return keyDataIndexMap
+
 }
