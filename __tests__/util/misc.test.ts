@@ -1,4 +1,4 @@
-import { inverseIndexMap, sortByKeyFunction } from "../../util/misc"
+import { inverseDataMap, inverseIndexMap, sortByKeyFunction } from "../../util/misc"
 
 describe("sortByKeyFunction", () => {    
     function f(data: {id: number, name: string}){return data.id}
@@ -37,8 +37,10 @@ describe("sortByKeyFunction", () => {
 describe("inverseIndexMap", () => {
     function f(data: {id: number, name: string}){return data.name}
     
+    type TestData = {id: number, name: string}
+
     type TestInput = {
-        a: {id: number, name: string}[]
+        a: TestData[]
         desc: string,
         expected: [string, number][]
     }
@@ -87,6 +89,73 @@ describe("inverseIndexMap", () => {
 
                 it("throws error", () => {                    
                     expect(() => inverseIndexMap(a, f)).toThrow(Error)
+                })
+        })
+    })
+})
+
+describe("inverseDataMap", () => {
+    function f(data: {id: number, name: string}){return data.name}
+    
+    type TestData = {id: number, name: string}
+
+    type TestInput = {
+        a: TestData[]
+        desc: string,
+        expected: [string, TestData][]
+    }
+    
+    describe("happy", () => {
+        const one = {id: 1, name: "One"}
+        const two = {id: 2, name: "Two"}
+        const three = {id: 3, name: "Three"}
+        describe.each<TestInput>([
+            {
+                a: [one, two, three],
+                desc: "Multiple values",
+                expected: [["One", one], ["Two", two], ["Three", three]],
+            },
+            {
+                a: [{id: 1, name: "One"}],
+                desc: "Single value",
+                expected: [["One", one]],
+            },
+            {
+                a: [],
+                desc: "Empty",
+                expected: [],
+            }
+        ])(
+            "$desc", ({a, expected}) => {
+
+                let expectedMap: Map<string, TestData>
+                let actualMap: Map<string, TestData>
+
+                beforeAll(() => {
+                    // Arrange
+                    expectedMap = new Map<string, TestData>(expected)
+                    
+                    // Act
+                    actualMap = inverseDataMap(a, f)
+                })
+
+                it("has expected mappings", () => {
+                    expect(actualMap).toEqual(expectedMap)
+                })
+        })
+    })
+    
+    describe("failure", () => {
+        describe.each([
+            {
+                a: [{id: 1, name: "One"}, {id: 2, name: "Two"}, {id: 3, name: "One"}],
+                desc: "Duplicate keys"
+            }
+        ])(
+            "$desc", ({a}) => {
+
+                it("throws error", () => {                    
+                    expect(() => inverseDataMap(a, f)).toThrow(Error)
                 })
         })
     })

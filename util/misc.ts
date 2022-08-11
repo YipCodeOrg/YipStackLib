@@ -49,8 +49,7 @@ export function sortByKeyFunction<TKey, TData>(sortArray: TKey[], dataArray: TDa
 
     return resultArray
 }
-
-export function inverseIndexMap<TData, TKey>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, number>{
+export function inverseIndexMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, number>{
     const keyDataIndexMap = new Map<TKey, number>()
 
     for (let index = 0; index < a.length; index++) {
@@ -67,4 +66,20 @@ export function inverseIndexMap<TData, TKey>(a: TData[], keyMapper: (data: TData
 
     return keyDataIndexMap
 
+}
+
+export function inverseDataMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, TData>{
+    function getValueAtIndex(i: number){
+        const val = a[i]
+        if(val === undefined){
+            throw new Error("Unexpected undefined element indexing array");            
+        }
+        return val
+    }
+    return mapMap(inverseIndexMap(a, keyMapper), (k, i) => [k, getValueAtIndex(i)])
+}
+
+function mapMap<TKI, TVI, TKO, TVO>(map: Map<TKI, TVI>,
+        f: (k: TKI, v: TVI, m: Map<TKI, TVI>) => [TKO, TVO]) : Map<TKO, TVO>{
+    return new Map([...map].map(p => f(p[0], p[1], map)))
 }
