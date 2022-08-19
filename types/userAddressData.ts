@@ -1,11 +1,12 @@
 import { Address, isAddress } from "../packages/YipAddress/core/address"
-import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
+import { areSimpleStringProperties, isStringArray, isTypedArray } from "../util/typePredicates"
 
 export type UserAddressData = {
     sub: string,
     yipCode: string,
     name?: string,
-    address: Address
+    address: Address,
+    registrations: string[]
 }
 
 export function isUserAddressDataArray(obj: any): obj is UserAddressData[]{
@@ -30,5 +31,13 @@ export function isUserAddressData(obj: any): obj is UserAddressData{
 
     const addres = obj.address
 
-    return isAddress(addres)
+    if(!isAddress(addres)){
+        return false
+    }
+
+    const registrations = obj.registrations
+    if(!isStringArray(registrations)){
+        return false
+    }
+    return true
 }
