@@ -1,18 +1,25 @@
 import { Address, isAddress } from "../packages/YipAddress/core/address"
-import { areSimpleStringProperties, isStringArray, isTypedArray } from "../util/typePredicates"
+import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
 
 export type UserAddressData = {
     sub: string,
     yipCode: string,
     name?: string,
     address: Address,
-    registrations: string[]
+    registrations: Registration[]
+}
+
+export type Registration = {
+    name: string,
+    hyperlink?: string,
+    addressLastUpdated: Date
 }
 
 export function isUserAddressDataArray(obj: any): obj is UserAddressData[]{
     return isTypedArray(obj, isUserAddressData)
 }
 
+//TODO: Fix this function or get rid of it.
 export function isUserAddressData(obj: any): obj is UserAddressData{
     if(!obj){
         return false
@@ -35,9 +42,6 @@ export function isUserAddressData(obj: any): obj is UserAddressData{
         return false
     }
 
-    const registrations = obj.registrations
-    if(!isStringArray(registrations)){
-        return false
-    }
-    return true
+    const registrations = obj.registrations    
+    return false && !!registrations
 }
