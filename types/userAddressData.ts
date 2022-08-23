@@ -5,8 +5,17 @@ export type UserAddressData = {
     sub: string,
     yipCode: string,
     name?: string,
+    address: AddressItem,    
+    registrations: Registration[],
+}
+
+export type AddressMetadata = {
+    lastUpdated: Date
+}
+
+export type AddressItem = {
     address: Address,
-    registrations: Registration[]
+    addressMetadata: AddressMetadata
 }
 
 export type Registration = {
