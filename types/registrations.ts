@@ -12,5 +12,9 @@ export function isRegistrationUpToDate(registration: Registration, date: Date){
 
 export type RegistrationsValidationResult = {
     arrayValidationResult: ValidationResult,
-    itemValidations: ValidationResult[]
+    itemValidations: RegistrationValidationResult[]
+}
+
+export type RegistrationValidationResult = {
+    name: ValidationResult
 }
