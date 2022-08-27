@@ -1,4 +1,4 @@
-import { ValidationResult } from "../packages/YipAddress/validate/validation"
+import { EmptyValidationResult, ValidationResult } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -17,4 +17,8 @@ export type RegistrationsValidationResult = {
 
 export type RegistrationValidationResult = {
     name: ValidationResult
+}
+
+export const EmptyRegistrationValidationResult: RegistrationValidationResult= {
+    name: EmptyValidationResult
 }
