@@ -1,5 +1,6 @@
 import { Address, isAddress } from "../packages/YipAddress/core/address"
 import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
+import { Registration } from "./registrations"
 
 export type UserAddressData = {
     sub: string,
@@ -16,16 +17,6 @@ export type AddressMetadata = {
 export type AddressItem = {
     address: Address,
     addressMetadata: AddressMetadata
-}
-
-export type Registration = {
-    name: string,
-    hyperlink?: string,
-    addressLastUpdated: Date
-}
-
-export function isRegistrationUpToDate(registration: Registration, date: Date){
-    return registration.addressLastUpdated > date
 }
 
 export function isUserAddressDataArray(obj: any): obj is UserAddressData[]{
