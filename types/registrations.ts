@@ -1,4 +1,5 @@
-import { EmptyValidationResult, ValidationResult } from "../packages/YipAddress/validate/validation"
+import { inverseIndexDuplicatesMap } from "../packages/YipAddress/util/arrayUtil"
+import { EmptyValidationResult, newEmptyValidationResult, ValidationResult } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -36,10 +37,34 @@ function validateItems(rs: Registration[]): RegistrationValidationResult[]{
 }
 
 function validateTopLevel(rs: Registration[]): ValidationResult{
-    throw new Error("Function not implemented.")
+    const validation = newEmptyValidationResult()
+    validateNames(rs, validation)
+    return validation
 }
 
+function validateNames(rs: Registration[], validation: ValidationResult) {    
+    const nameDupesMap = inverseIndexDuplicatesMap(rs, r => r.name)
+    for(var entry of nameDupesMap){
+        const error = duplicateNameError(entry)
+        validation.errors.push(error)
+    }
+}
+
+function duplicateNameError([n, s]: [string, Set<number>]) : string {
+    return `Duplicate name ${n} at indices ${s.entries}`
+}
 
 export function validateRegistration(r: Registration): RegistrationValidationResult{
-    throw new Error("Function not implemented.")
+    return {
+        name: validateName(r)
+    }
 }
+
+function validateName(r: Registration): ValidationResult{
+    const validation = newEmptyValidationResult()
+    if(!r.name){
+        validation.errors.push("Name must not be blank")
+    }
+    return validation
+}
+
