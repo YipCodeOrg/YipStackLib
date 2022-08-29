@@ -36,22 +36,9 @@ function validateItems(rs: Registration[]): RegistrationValidationResult[]{
     return rs.map(r => validateRegistration(r))
 }
 
-function validateTopLevel(rs: Registration[]): ValidationResult{
+function validateTopLevel(_: Registration[]): ValidationResult{
     const validation = newEmptyValidationResult()
-    validateNames(rs, validation)
     return validation
-}
-
-function validateNames(rs: Registration[], validation: ValidationResult) {    
-    const nameDupesMap = inverseIndexDuplicatesMap(rs, r => r.name)
-    for(var entry of nameDupesMap){
-        const error = duplicateNameError(entry)
-        validation.errors.push(error)
-    }
-}
-
-function duplicateNameError([n, s]: [string, Set<number>]) : string {
-    return `Duplicate name ${n} at indices ${s.entries}`
 }
 
 export function validateRegistration(r: Registration): RegistrationValidationResult{
