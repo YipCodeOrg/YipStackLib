@@ -4,7 +4,6 @@ import { Registration } from "./registrations"
 
 export type UserAddressData = {
     sub: string,
-    yipCode: string,
     name?: string,
     address: AddressItem,    
     registrations: Registration[],
@@ -16,6 +15,7 @@ export type AddressMetadata = {
 
 export type AddressItem = {
     address: Address,
+    yipCode: string,
     addressMetadata: AddressMetadata
 }
 
