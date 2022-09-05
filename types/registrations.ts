@@ -1,3 +1,4 @@
+import { validateNameNotBlank } from "../packages/YipAddress/validate/commonValidations"
 import { EmptyValidationResult, newEmptyValidationResult, ValidationResult } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
@@ -31,6 +32,7 @@ export function validateRegistrations(rs: Registration[]): RegistrationsValidati
         itemValidations
     }
 }
+
 function validateItems(rs: Registration[]): RegistrationValidationResult[]{
     return rs.map(r => validateRegistration(r))
 }
@@ -42,15 +44,6 @@ function validateTopLevel(_: Registration[]): ValidationResult{
 
 export function validateRegistration(r: Registration): RegistrationValidationResult{
     return {
-        name: validateName(r)
+        name: validateNameNotBlank(r, r => r.name)
     }
 }
-
-function validateName(r: Registration): ValidationResult{
-    const validation = newEmptyValidationResult()
-    if(!r.name){
-        validation.errors.push("Name must not be blank")
-    }
-    return validation
-}
-
