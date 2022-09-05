@@ -20,13 +20,13 @@ export type RegistrationValidationResult = {
     name: ValidationResult
 }
 
-export const EmptyRegistrationValidationResult: RegistrationValidationResult= {
+export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
     name: EmptyValidationResult
 }
 
 export function validateRegistrations(rs: Registration[]): RegistrationsValidationResult{
-    const topValidationResult = validateTopLevel(rs)
     const itemValidations = validateItems(rs)
+    const topValidationResult = validateTopLevel(rs, itemValidations)
     return {
         topValidationResult,
         itemValidations
@@ -37,9 +37,10 @@ function validateItems(rs: Registration[]): RegistrationValidationResult[]{
     return rs.map(r => validateRegistration(r))
 }
 
-function validateTopLevel(rs: Registration[]): ValidationResult{
+function validateTopLevel(rs: Registration[], 
+    itemValidations: RegistrationValidationResult[]): ValidationResult{
     const validation = newEmptyValidationResult()
-    validateUniqueStr(validation, rs, r => r.name, ValidationSeverity.ERROR, "Name")
+    validateUniqueStr(validation, rs, r => r.name, itemValidations, v => v.name, ValidationSeverity.ERROR, "Name")
     return validation
 }
 
