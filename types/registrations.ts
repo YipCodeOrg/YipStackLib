@@ -1,5 +1,5 @@
-import { validateNameNotBlank } from "../packages/YipAddress/validate/commonValidations"
-import { EmptyValidationResult, newEmptyValidationResult, ValidationResult } from "../packages/YipAddress/validate/validation"
+import { validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
+import { EmptyValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -37,8 +37,9 @@ function validateItems(rs: Registration[]): RegistrationValidationResult[]{
     return rs.map(r => validateRegistration(r))
 }
 
-function validateTopLevel(_: Registration[]): ValidationResult{
+function validateTopLevel(rs: Registration[]): ValidationResult{
     const validation = newEmptyValidationResult()
+    validateUniqueStr(validation, rs, r => r.name, ValidationSeverity.ERROR, "Name")
     return validation
 }
 
