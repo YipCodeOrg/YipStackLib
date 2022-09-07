@@ -1,5 +1,5 @@
-import { validateAndCollectItems, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
-import { ArrayValidationResult, collectValidations, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
+import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
+import { ArrayValidationResult, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -13,44 +13,32 @@ export function isRegistrationUpToDate(registration: Registration, date: Date){
 
 export type RegistrationsValidationResult = ArrayValidationResult<RegistrationValidationResult>
 
-export type RegistrationValidationResult = ItemValidationResult<{
+export type RegistrationValidationResult = ItemValidationResult<RegistrationFieldValidationResult>
+
+export type RegistrationFieldValidationResult = {
     name: ValidationResult
-}>
+}
 
 export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
-    flatValidations: newEmptyValidationResult(),
+    flatValidation: newEmptyValidationResult(),
     fieldValidations: {
         name: newEmptyValidationResult()
     }    
 }
 
-export function validateRegistrations(rs: Registration[]): RegistrationsValidationResult{
-    const topValidationResult = newEmptyValidationResult()
-    const itemValidations = validateItems(rs, topValidationResult)
-    validateTopLevel(topValidationResult, rs, itemValidations)
-    return {
-        topValidationResult,
-        itemValidations
-    }
+export function validateRegistrations(rs: Registration[]): RegistrationsValidationResult{    
+    return validateItemResultArray(rs, validateRegistration, validateTopLevelRegistrations)
 }
 
-function validateItems(rs: Registration[], topValidationResult: ValidationResult): RegistrationValidationResult[]{
-    return validateAndCollectItems(rs, validateRegistration, v => v.flatValidations, topValidationResult)
-}
+const validateRegistration = liftFieldValidationToItemValidation(fieldValidateRegistration)
 
-function validateTopLevel(topValidationResult: ValidationResult, rs: Registration[], 
+function validateTopLevelRegistrations(topValidationResult: ValidationResult, rs: Registration[], 
     itemValidations: RegistrationValidationResult[]){
     validateUniqueStr(topValidationResult, rs, r => r.name, itemValidations, v => v.fieldValidations.name, ValidationSeverity.ERROR, "Name")
 }
 
-export function validateRegistration(r: Registration): RegistrationValidationResult{
-    const fieldValidations = {
+export function fieldValidateRegistration(r: Registration): RegistrationFieldValidationResult{
+    return {
         name: validateNameNotBlank(r, r => r.name)
     }
-
-    return {
-        flatValidations: collectValidations(fieldValidations),
-        fieldValidations
-    }
 }
-
