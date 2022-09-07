@@ -1,5 +1,5 @@
 import { validateAndCollectItems, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
-import { collectValidations, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
+import { ArrayValidationResult, collectValidations, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -11,17 +11,11 @@ export function isRegistrationUpToDate(registration: Registration, date: Date){
     return registration.addressLastUpdated > date
 }
 
-export type RegistrationsValidationResult = {
-    topValidationResult: ValidationResult,
-    itemValidations: RegistrationValidationResult[]
-}
+export type RegistrationsValidationResult = ArrayValidationResult<RegistrationValidationResult>
 
-export type RegistrationValidationResult = {
-    flatValidations: ValidationResult,
-    fieldValidations: {
-        name: ValidationResult
-    }    
-}
+export type RegistrationValidationResult = ItemValidationResult<{
+    name: ValidationResult
+}>
 
 export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
     flatValidations: newEmptyValidationResult(),
