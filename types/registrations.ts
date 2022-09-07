@@ -20,7 +20,7 @@ export function flatRegistrationsValidationResult(r: RegistrationsValidationResu
     if(r === null){
         return newEmptyValidationResult()
     }
-    return mergeValidations([r.topValidationResult, collectValidations(r.itemValidations)])
+    return mergeValidations([r.topValidationResult, ...r.itemValidations.map(collectValidations)])
 }
 
 export type RegistrationValidationResult = {
