@@ -1,5 +1,5 @@
 import { validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
-import { emptyValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
+import { collectValidations, emptyValidationResult, mergeValidations, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
@@ -14,6 +14,13 @@ export function isRegistrationUpToDate(registration: Registration, date: Date){
 export type RegistrationsValidationResult = {
     topValidationResult: ValidationResult,
     itemValidations: RegistrationValidationResult[]
+}
+
+export function flatRegistrationsValidationResult(r: RegistrationsValidationResult | null): ValidationResult{
+    if(r === null){
+        return newEmptyValidationResult()
+    }
+    return mergeValidations([r.topValidationResult, collectValidations(r.itemValidations)])
 }
 
 export type RegistrationValidationResult = {
