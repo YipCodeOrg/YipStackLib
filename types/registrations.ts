@@ -7,24 +7,13 @@ export type Registration = {
     addressLastUpdated: Date
 }
 
-export function isRegistrationUpToDate(registration: Registration, date: Date){
-    return registration.addressLastUpdated > date
-}
-
-export type RegistrationsValidationResult = ArrayValidationResult<RegistrationValidationResult>
-
-export type RegistrationValidationResult = ItemValidationResult<RegistrationFieldValidationResult>
-
 export type RegistrationFieldValidationResult = {
     name: ValidationResult
 }
 
-export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
-    flatValidation: newEmptyValidationResult(),
-    fieldValidations: {
-        name: newEmptyValidationResult()
-    }    
-}
+export type RegistrationValidationResult = ItemValidationResult<RegistrationFieldValidationResult>
+
+export type RegistrationsValidationResult = ArrayValidationResult<RegistrationValidationResult>
 
 export function validateRegistrations(rs: Registration[]): RegistrationsValidationResult{    
     return validateItemResultArray(rs, validateRegistration, validateTopLevelRegistrations)
@@ -37,8 +26,19 @@ function validateTopLevelRegistrations(topValidationResult: ValidationResult, rs
     validateUniqueStr(topValidationResult, rs, r => r.name, itemValidations, v => v.fieldValidations.name, ValidationSeverity.ERROR, "Name")
 }
 
-export function fieldValidateRegistration(r: Registration): RegistrationFieldValidationResult{
+function fieldValidateRegistration(r: Registration): RegistrationFieldValidationResult{
     return {
         name: validateNameNotBlank(r, r => r.name)
     }
+}
+
+export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
+    flatValidation: newEmptyValidationResult(),
+    fieldValidations: {
+        name: newEmptyValidationResult()
+    }    
+}
+
+export function isRegistrationUpToDate(registration: Registration, date: Date){
+    return registration.addressLastUpdated > date
 }

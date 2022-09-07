@@ -1,42 +1,32 @@
-import { validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
-import { newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
+import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
+import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Friend = {
     yipCode: string,
     name: string
 }
 
-export type FriendValidationResult = {
+export type FriendFieldValidationResult = {
     name: ValidationResult,
     yipCode: ValidationResult
 }
 
-export type FriendsValidationResult = {
-    topValidationResult: ValidationResult,
-    itemValidations: FriendValidationResult[]
-}
+export type FriendValidationResult = ItemValidationResult<FriendFieldValidationResult>
+
+export type FriendsValidationResult = ArrayValidationResult<FriendValidationResult>
 
 export function validateFriends(fs: Friend[]) : FriendsValidationResult {
-    const itemValidations = validateItems(fs)
-    const topValidationResult = validateTopLevel(fs, itemValidations)
-    return {
-        topValidationResult,
-        itemValidations
-    }
+    return validateItemResultArray(fs, validateFriend, validateTopLevelFriends)
 }
 
-function validateTopLevel(fs: Friend[], itemValidations: FriendValidationResult[]): ValidationResult{
-    const validation = newEmptyValidationResult()
-    validateUniqueStr(validation, fs, f => f.yipCode, itemValidations, v => v.yipCode, ValidationSeverity.ERROR, "YipCode")
-    validateUniqueStr(validation, fs, f => f.name, itemValidations, v => v.name, ValidationSeverity.ERROR, "Name")
-    return validation
+const validateFriend = liftFieldValidationToItemValidation(fieldValidateFriend)
+
+function validateTopLevelFriends(topValidationResult: ValidationResult, fs: Friend[], itemValidations: FriendValidationResult[]){
+    validateUniqueStr(topValidationResult, fs, f => f.yipCode, itemValidations, v => v.fieldValidations.yipCode, ValidationSeverity.ERROR, "YipCode")
+    validateUniqueStr(topValidationResult, fs, f => f.name, itemValidations, v => v.fieldValidations.name, ValidationSeverity.ERROR, "Name")
 }
 
-function validateItems(fs: Friend[]): FriendValidationResult[]{
-    return fs.map(f => validateFriend(f))
-}
-
-export function validateFriend(f: Friend): FriendValidationResult{
+function fieldValidateFriend(f: Friend): FriendFieldValidationResult{
     return {
         name: validateNameNotBlank(f, f => f.name),
         yipCode: validateStringNotBlank(f, f => f.yipCode, "YipCode")
