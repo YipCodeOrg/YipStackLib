@@ -16,7 +16,7 @@ export type FriendValidationResult = ItemValidationResult<FriendFieldValidationR
 export type FriendsValidationResult = ArrayValidationResult<FriendValidationResult>
 
 export function validateFriends(fs: Friend[]) : FriendsValidationResult {
-    return validateItemResultArray(fs, validateFriend, validateTopLevelFriends)
+    return validateItemResultArray(fs, validateFriend, validateTopLevelFriends, "friend")
 }
 
 const validateFriend = liftFieldValidationToItemValidation(fieldValidateFriend)

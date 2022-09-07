@@ -16,7 +16,7 @@ export type RegistrationValidationResult = ItemValidationResult<RegistrationFiel
 export type RegistrationsValidationResult = ArrayValidationResult<RegistrationValidationResult>
 
 export function validateRegistrations(rs: Registration[]): RegistrationsValidationResult{    
-    return validateItemResultArray(rs, validateRegistration, validateTopLevelRegistrations)
+    return validateItemResultArray(rs, validateRegistration, validateTopLevelRegistrations, "registration")
 }
 
 const validateRegistration = liftFieldValidationToItemValidation(fieldValidateRegistration)
