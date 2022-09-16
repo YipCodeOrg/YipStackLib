@@ -1,6 +1,10 @@
-import { Address, isAddress } from "../packages/YipAddress/core/address"
+import { Address, isAddress } from "../packages/YipAddress/types/address/address"
 import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
 import { Registration } from "./registrations"
+
+
+
+// TODO: All of the below is subject to re-design
 
 export type UserAddressData = {
     sub: string,
