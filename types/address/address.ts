@@ -1,8 +1,11 @@
-import { Address, isAddress } from "../packages/YipAddress/types/address/address"
-import { areSimpleStringProperties, isTypedArray } from "../util/typePredicates"
-import { Registration } from "./registrations"
+import { Address, isAddress } from "../../packages/YipAddress/types/address/address"
+import { areSimpleStringProperties, isTypedArray } from "../../util/typePredicates"
+import { Registration } from "../registrations"
 
-
+export type CreateAddressData = {
+    name?: string,
+    address: Address    
+}
 
 // TODO: All of the below is subject to re-design
 

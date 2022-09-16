@@ -33,7 +33,7 @@ function fieldValidateRegistration(r: Registration): RegistrationFieldValidation
 }
 
 export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
-    flatValidation: newEmptyValidationResult(),
+    topValidationResult: newEmptyValidationResult(),
     fieldValidations: {
         name: newEmptyValidationResult()
     }    
