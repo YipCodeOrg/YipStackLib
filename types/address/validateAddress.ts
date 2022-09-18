@@ -1,6 +1,6 @@
 import { AddressValidationResult, validateAddress } from "../../packages/YipAddress/types/address/validateAddress";
 import { liftFieldValidationToItemValidation, validateNameNotBlank } from "../../packages/YipAddress/validate/commonValidations";
-import { ItemValidationResult, ValidationResult } from "../../packages/YipAddress/validate/validation";
+import { ItemValidationResult, newEmptyValidationResult, ValidationResult } from "../../packages/YipAddress/validate/validation";
 import { CreateAddressData } from "./address";
 
 export type CreateAddressDataFieldValidationResult = {
@@ -21,5 +21,9 @@ function fieldValidateCreateAddress(data: CreateAddressData): CreateAddressDataF
 }
 
 function validateName(data: CreateAddressData){
-    return validateNameNotBlank(data, d => d.name)
+    if(data.name !== undefined){
+        return validateNameNotBlank(data, d => d.name)
+    } else {
+        return newEmptyValidationResult()
+    }
 }
