@@ -1,6 +1,6 @@
 import { AddressValidationResult, validateAddress } from "../../packages/YipAddress/types/address/validateAddress";
 import { liftFieldValidationToItemValidation, validateNameNotBlank } from "../../packages/YipAddress/validate/commonValidations";
-import { ItemValidationResult, newEmptyValidationResult, ValidationResult } from "../../packages/YipAddress/validate/validation";
+import { ItemValidationResult, ValidationResult, ValidationSeverity } from "../../packages/YipAddress/validate/validation";
 import { CreateAddressData } from "./address";
 
 export type CreateAddressDataFieldValidationResult = {
@@ -21,9 +21,9 @@ function fieldValidateCreateAddress(data: CreateAddressData): CreateAddressDataF
 }
 
 function validateName(data: CreateAddressData){
-    if(data.name !== undefined){
-        return validateNameNotBlank(data, d => d.name)
-    } else {
-        return newEmptyValidationResult()
+    let severity = ValidationSeverity.ERROR
+    if(data.name === undefined){
+        severity = ValidationSeverity.WARNING
     }
+    return validateNameNotBlank(data, d => d.name, severity)
 }

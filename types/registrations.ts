@@ -28,7 +28,7 @@ function validateTopLevelRegistrations(topValidationResult: ValidationResult, rs
 
 function fieldValidateRegistration(r: Registration): RegistrationFieldValidationResult{
     return {
-        name: validateNameNotBlank(r, r => r.name)
+        name: validateNameNotBlank(r, r => r.name, ValidationSeverity.ERROR)
     }
 }
 

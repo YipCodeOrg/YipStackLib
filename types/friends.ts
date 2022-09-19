@@ -28,7 +28,7 @@ function validateTopLevelFriends(topValidationResult: ValidationResult, fs: Frie
 
 function fieldValidateFriend(f: Friend): FriendFieldValidationResult{
     return {
-        name: validateNameNotBlank(f, f => f.name),
-        yipCode: validateStringNotBlank(f, f => f.yipCode, "YipCode")
+        name: validateNameNotBlank(f, f => f.name, ValidationSeverity.ERROR),
+        yipCode: validateStringNotBlank(f, f => f.yipCode, "YipCode", ValidationSeverity.ERROR)
     }
 }
