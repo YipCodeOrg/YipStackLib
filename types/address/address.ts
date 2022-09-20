@@ -23,6 +23,7 @@ export type AddressMetadata = {
 export type AddressItem = {
     address: Address,
     yipCode: string,
+    name?: string,
     addressMetadata: AddressMetadata
 }
 
