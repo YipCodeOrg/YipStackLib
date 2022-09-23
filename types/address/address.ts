@@ -1,10 +1,19 @@
 import { Address, isAddress } from "../../packages/YipAddress/types/address/address"
-import { areSimpleStringProperties, isTypedArray } from "../../util/typePredicates"
+import { areSimpleStringProperties, isString, isTypedArray } from "../../util/typePredicates"
 import { Registration } from "../registrations"
 
 export type CreateAddressData = {
     name?: string,
     address: Address    
+}
+
+export function isCreateAddressData(obj: any): obj is CreateAddressData{
+    const name = obj.name
+    if(name !== undefined && !isString(name)){
+        return false
+    }
+    const address = obj.address
+    return isAddress(address)
 }
 
 // TODO: All of the below is subject to re-design
@@ -20,11 +29,38 @@ export type AddressMetadata = {
     lastUpdated: Date
 }
 
+export function isAddressMetadata(obj: any): obj is AddressMetadata{
+    const lastUpdated = obj.lastUpdated
+    if(!(lastUpdated instanceof Date)){
+        return false
+    }
+    return true
+}
+
 export type AddressItem = {
     address: Address,
     yipCode: string,
     name?: string,
     addressMetadata: AddressMetadata
+}
+
+export function isAddressItem(obj: any): obj is AddressItem{
+    const name = obj.name
+    if(name !== undefined && !isString(name)){
+        return false
+    }
+    if(!isString(obj.yipCode)){
+        return false
+    }
+    const address = obj.address
+    if(!isAddress(address)){
+        return false
+    }
+    const metaData = obj.addressMetadata
+    if(!isAddressMetadata(metaData)){
+        return false
+    }
+    return true
 }
 
 export function isUserAddressDataArray(obj: any): obj is UserAddressData[]{
