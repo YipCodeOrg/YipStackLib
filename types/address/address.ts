@@ -1,4 +1,5 @@
 import { Address, isAddress } from "../../packages/YipAddress/types/address/address"
+import { SimpleDate } from "../../packages/YipAddress/util/date"
 import { areSimpleStringProperties, isString, isTypedArray } from "../../util/typePredicates"
 import { Registration } from "../registrations"
 
@@ -26,7 +27,7 @@ export type UserAddressData = {
 }
 
 export type AddressMetadata = {
-    lastUpdated: Date
+    lastUpdated: SimpleDate
 }
 
 export function isAddressMetadata(obj: any): obj is AddressMetadata{

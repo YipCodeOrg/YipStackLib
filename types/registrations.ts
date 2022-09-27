@@ -1,10 +1,11 @@
+import { SimpleDate, simpleDateToDate } from "../packages/YipAddress/util/date"
 import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Registration = {
     name: string,
     hyperlink?: string,
-    addressLastUpdated: Date
+    addressLastUpdated: SimpleDate
 }
 
 export type RegistrationFieldValidationResult = {
@@ -40,5 +41,6 @@ export const EmptyRegistrationValidationResult: RegistrationValidationResult = {
 }
 
 export function isRegistrationUpToDate(registration: Registration, date: Date){
-    return registration.addressLastUpdated > date
+    const lastUpdatedAsDate = simpleDateToDate(registration.addressLastUpdated)
+    return lastUpdatedAsDate > date
 }
