@@ -1,6 +1,6 @@
 import { Address, isAddress } from "../../packages/YipAddress/types/address/address"
 import { SimpleDate } from "../../packages/YipAddress/util/date"
-import { areSimpleStringProperties, isString, isTypedArray } from "../../util/typePredicates"
+import { areSimpleStringProperties, isString, isTypedArray } from "../../packages/YipAddress/util/typePredicates"
 import { Registration } from "../registrations"
 
 export type CreateAddressData = {
