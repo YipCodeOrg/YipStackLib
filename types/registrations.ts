@@ -1,4 +1,5 @@
-import { SimpleDate, simpleDateToDate } from "../packages/YipAddress/util/date"
+import { isSimpleDate, SimpleDate, simpleDateToDate } from "../packages/YipAddress/util/date"
+import { isString } from "../packages/YipAddress/util/typePredicates"
 import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
@@ -6,6 +7,23 @@ export type Registration = {
     name: string,
     hyperlink?: string,
     addressLastUpdated: SimpleDate
+}
+
+export function isRegistration(obj: any): obj is Registration{
+    if(obj === undefined){
+        return false
+    }
+    if(!isString(obj.name)){
+        return false
+    }
+    const hyperlink = obj.hyperlink
+    if(hyperlink !== undefined && !isString(hyperlink)){
+        return false
+    }
+    if(!isSimpleDate(obj.addressLastUpdated)){
+        return false
+    }
+    return true
 }
 
 export type RegistrationFieldValidationResult = {
