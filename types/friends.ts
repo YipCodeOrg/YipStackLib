@@ -1,9 +1,17 @@
+import { areSimpleStringProperties } from "../packages/YipAddress/util/typePredicates"
 import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Friend = {
     yipCode: string,
     name: string
+}
+
+export function isFriend(obj: any): obj is Friend{
+    if(!areSimpleStringProperties(obj, ["yipCode", "name"])){
+        return false
+    }
+    return true
 }
 
 export type FriendFieldValidationResult = {
