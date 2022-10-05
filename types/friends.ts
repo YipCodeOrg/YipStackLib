@@ -1,10 +1,14 @@
-import { areSimpleStringProperties } from "../packages/YipAddress/util/typePredicates"
+import { isTypedArray, areSimpleStringProperties } from "../packages/YipAddress/util/typePredicates"
 import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
 export type Friend = {
     yipCode: string,
     name: string
+}
+
+export function isFriendArray(obj: any): obj is Friend[]{
+    return isTypedArray(obj, isFriend)
 }
 
 export function isFriend(obj: any): obj is Friend{
