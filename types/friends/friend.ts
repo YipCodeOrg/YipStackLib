@@ -1,6 +1,6 @@
-import { isTypedArray, areSimpleStringProperties } from "../packages/YipAddress/util/typePredicates"
-import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
-import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
+import { isTypedArray, areSimpleStringProperties } from "../../packages/YipAddress/util/typePredicates"
+import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateStringNotBlank, validateUniqueStr } from "../../packages/YipAddress/validate/commonValidations"
+import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../../packages/YipAddress/validate/validation"
 
 export type Friend = {
     yipCode: string,
