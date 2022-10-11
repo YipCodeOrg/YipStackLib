@@ -1,5 +1,5 @@
 import { isSimpleDate, SimpleDate, simpleDateToDate } from "../packages/YipAddress/util/date"
-import { isString } from "../packages/YipAddress/util/typePredicates"
+import { isString, isTypedArray } from "../packages/YipAddress/util/typePredicates"
 import { liftFieldValidationToItemValidation, validateItemResultArray, validateNameNotBlank, validateUniqueStr } from "../packages/YipAddress/validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "../packages/YipAddress/validate/validation"
 
@@ -24,6 +24,10 @@ export function isRegistration(obj: any): obj is Registration{
         return false
     }
     return true
+}
+
+export function isRegistrations(obj: any): obj is Registration[]{
+    return isTypedArray(obj, isRegistration)
 }
 
 export type RegistrationFieldValidationResult = {
